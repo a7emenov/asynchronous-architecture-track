@@ -6,7 +6,8 @@ import pureconfig.{ConfigReader, ConfigSource}
 import pureconfig.generic.semiauto._
 
 case class ApplicationConfig(
-  http: HttpConfig)
+  http: HttpConfig,
+  authentication: AuthenticationConfig)
 
 object ApplicationConfig {
 

@@ -3,7 +3,7 @@ package com.github.a7emenov.auth_service.services
 import cats.effect.Sync
 import cats.syntax.flatMap._
 import cats.syntax.functor._
-import com.github.a7emenov.auth_service.domain.{User, UserId}
+import com.github.a7emenov.auth_service.domain.{User, UserId, UserRole}
 
 import java.util.UUID
 import scala.collection.mutable
@@ -43,5 +43,6 @@ object UserServiceInMemoryImplementation {
   def make[F[_]: Sync]: F[UserService[F]] =
     for {
       storage <- Sync[F].delay(mutable.Map.empty[UserId, User])
+      _ <- Sync[F].delay(storage.put(UserId("f1c0f431-1d64-492b-be8e-baf57bb44a12"), User("Dummy", "Dummy", UserRole.Admin)))
     } yield new UserServiceInMemoryImplementation(storage)
 }

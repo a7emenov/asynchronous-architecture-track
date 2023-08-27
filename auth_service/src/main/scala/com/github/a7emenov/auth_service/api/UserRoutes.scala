@@ -6,7 +6,6 @@ import cats.syntax.functor._
 import com.github.a7emenov.auth_service.api.ApiFormats._
 import com.github.a7emenov.auth_service.domain.{User, UserId}
 import com.github.a7emenov.auth_service.services.UserService
-import io.circe.generic.auto._
 import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec.circeEntityDecoder
 import org.http4s.circe.CirceEntityEncoder._
