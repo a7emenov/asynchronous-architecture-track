@@ -56,6 +56,8 @@ lazy val task_service = project
     scalafmtSettings,
     libraryDependencies ++= Seq(
       "io.circe"                   %% "circe-generic"       % Versions.circe,
+      "io.circe"                   %% "circe-generic-extras"       % Versions.circe,
+
       "org.http4s"                 %% "http4s-blaze-server" % Versions.http4s,
       "org.http4s"                 %% "http4s-dsl"          % Versions.http4s,
       "org.http4s"                 %% "http4s-circe"        % Versions.http4s,

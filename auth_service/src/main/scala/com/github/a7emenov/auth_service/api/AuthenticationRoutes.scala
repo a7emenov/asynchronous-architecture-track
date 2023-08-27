@@ -16,7 +16,7 @@ import org.http4s.{HttpRoutes, Request, Response, ResponseCookie}
 class AuthenticationRoutes[F[_]: Async](authenticationService: AuthenticationService[F])
     extends Server.Routes[F] with Http4sDslBinCompat[F] {
 
-  private def userRoutes: HttpRoutes[F] =
+  private def authenticationRoutes: HttpRoutes[F] =
     HttpRoutes.of {
       case POST -> Root / "login" / userId =>
         for {
@@ -49,7 +49,7 @@ class AuthenticationRoutes[F[_]: Async](authenticationService: AuthenticationSer
 
   override val routes: HttpRoutes[F] =
     Router[F](
-      "authentication" -> userRoutes
+      "authentication" -> authenticationRoutes
     )
 
 }
