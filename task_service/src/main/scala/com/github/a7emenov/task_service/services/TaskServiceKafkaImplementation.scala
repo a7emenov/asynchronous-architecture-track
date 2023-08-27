@@ -75,7 +75,7 @@ object TaskServiceKafkaImplementation {
       deriveConfiguredEncoder
   }
 
-  implicit def userIdSerializer[F[_]: Sync]: KafkaSerializer[F, TaskId] =
+  implicit def taskIdSerializer[F[_]: Sync]: KafkaSerializer[F, TaskId] =
     KafkaSerializer.string.contramap(_.value.asJson.noSpaces)
 
   implicit def userStreamingEventSerializer[F[_]: Sync]: KafkaSerializer[F, TaskBusinessEvent] =

@@ -15,7 +15,7 @@ class BillingRoutes[F[_]: Async](balanceService: BalanceService[F]) extends Serv
 
   private def userRoutes: HttpRoutes[F] =
     HttpRoutes.of {
-      case GET -> Root / "balance" / "get" / userId =>
+      case GET -> Root / "balance" / userId =>
         for {
           balance <- balanceService.get(UserId(userId))
           result <- Ok(UserBalanceResponse(balance.value))
