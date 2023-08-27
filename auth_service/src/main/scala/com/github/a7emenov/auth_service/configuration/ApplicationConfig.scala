@@ -7,7 +7,8 @@ import pureconfig.generic.semiauto._
 
 case class ApplicationConfig(
   http: HttpConfig,
-  authentication: AuthenticationConfig)
+  authentication: AuthenticationConfig,
+  userStreamingProducer: UserStreamingProducerConfig)
 
 object ApplicationConfig {
 

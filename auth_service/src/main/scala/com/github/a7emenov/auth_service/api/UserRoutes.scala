@@ -47,9 +47,6 @@ class UserRoutes[F[_]: Async](userService: UserService[F]) extends Server.Routes
               NotFound()
           }
         } yield result
-
-      case DELETE -> Root / "delete" / userId =>
-        userService.delete(UserId(userId)) >> Ok()
     }
 
   override val routes: HttpRoutes[F] =

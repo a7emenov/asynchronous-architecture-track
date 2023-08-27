@@ -33,9 +33,6 @@ class UserServiceInMemoryImplementation[F[_]: Sync](map: mutable.Map[UserId, Use
 
   override def get(userId: UserId): F[Option[User]] =
     Sync[F].delay(map.get(userId))
-
-  override def delete(userId: UserId): F[Unit] =
-    Sync[F].delay(map.remove(userId))
 }
 
 object UserServiceInMemoryImplementation {
