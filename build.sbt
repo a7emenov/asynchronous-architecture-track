@@ -61,6 +61,7 @@ lazy val task_service = project
       "org.http4s"                 %% "http4s-blaze-server" % Versions.http4s,
       "org.http4s"                 %% "http4s-dsl"          % Versions.http4s,
       "org.http4s"                 %% "http4s-circe"        % Versions.http4s,
+      "org.http4s"                 %% "http4s-blaze-client"        % Versions.http4s,
       "com.github.pureconfig"      %% "pureconfig"          % Versions.pureconfig,
       "ch.qos.logback"              % "logback-classic"     % Versions.logback,
       "com.typesafe.scala-logging" %% "scala-logging"       % Versions.scalaLogging

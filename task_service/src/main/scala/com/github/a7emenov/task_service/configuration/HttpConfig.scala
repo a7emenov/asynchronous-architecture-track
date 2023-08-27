@@ -5,8 +5,7 @@ import pureconfig.generic.semiauto.deriveReader
 
 case class HttpConfig(
   host: String,
-  port: Int
-                     )
+  port: Int)
 
 object HttpConfig {
 

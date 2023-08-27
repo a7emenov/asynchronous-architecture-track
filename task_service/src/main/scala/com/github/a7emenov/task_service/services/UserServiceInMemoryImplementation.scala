@@ -9,10 +9,13 @@ import com.github.a7emenov.task_service.domain.{User, UserId, UserRole}
 import scala.collection.mutable
 import scala.util.Random
 
-class UserServiceInMemoryImplementation[F[_]: Sync](random: Random, map: mutable.Map[UserId, User]) extends UserService[F] {
+class UserServiceInMemoryImplementation[F[_]: Sync](
+  random: Random,
+  map: mutable.Map[UserId, User])
+    extends UserService[F] {
 
   override def upsert(user: User): F[Unit] =
-    Sync[F].delay(map.update(user.id, user).some)
+    Sync[F].delay(map.update(user.userId, user).some)
 
   override def get(userId: UserId): F[Option[User]] =
     Sync[F].delay(map.get(userId))

@@ -34,7 +34,8 @@ class AuthenticationServiceInMemoryImplementation[F[_]: Applicative](
   override def authenticate(token: AuthenticationToken): F[Option[(UserId, User)]] =
     (for {
       claim <- JwtCirce
-        .decode(token.value, config.secretKey, algorithms = Seq(AuthenticationServiceInMemoryImplementation.algo)).toOption
+        .decode(token.value, config.secretKey, algorithms = Seq(AuthenticationServiceInMemoryImplementation.algo))
+        .toOption
       body <- decode[JwtClaimBody](claim.content).toOption
     } yield (body.userId, body.user)).pure[F]
 }
@@ -67,8 +68,8 @@ object AuthenticationServiceInMemoryImplementation {
     deriveConfiguredCodec
 
   private case class JwtClaimBody(
-                                   userId: UserId,
-                                   user: User)
+    userId: UserId,
+    user: User)
 
   private object JwtClaimBody {
 

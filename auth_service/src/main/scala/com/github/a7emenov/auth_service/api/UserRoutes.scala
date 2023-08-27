@@ -20,7 +20,7 @@ class UserRoutes[F[_]: Async](userService: UserService[F]) extends Server.Routes
         for {
           user <- request.as[User]
           userId <- userService.create(user)
-          result <- Ok(userId)
+          result <- Created(userId)
         } yield result
 
       case request @ POST -> Root / "update" / userId =>

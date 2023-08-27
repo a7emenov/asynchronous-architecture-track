@@ -11,9 +11,11 @@ import java.util.UUID
 import scala.collection.mutable
 import scala.util.Random
 
-class TaskServiceInMemoryImplementation[F[_]: Sync](random: Random,
-                                                    map: mutable.Map[UserId, mutable.Map[TaskId, Task]],
-                                                    userService: UserService[F]) extends TaskService[F] {
+class TaskServiceInMemoryImplementation[F[_]: Sync](
+  random: Random,
+  map: mutable.Map[UserId, mutable.Map[TaskId, Task]],
+  userService: UserService[F])
+    extends TaskService[F] {
 
   override def create(description: String): F[Task] =
     for {
@@ -24,12 +26,14 @@ class TaskServiceInMemoryImplementation[F[_]: Sync](random: Random,
       _ <- addTask(task)
     } yield task
 
-  override def complete(userId: UserId, taskId: TaskId): F[Option[Task]] =
+  override def complete(
+    userId: UserId,
+    taskId: TaskId): F[Option[Task]] =
     Sync[F].delay {
       map.get(userId).flatMap(_.get(taskId)) match {
         case Some(task) =>
           val newTask = task.copy(status = TaskStatus.Completed)
-          map(userId)(taskId) = newTask
+          map(userId) -= taskId
           newTask.some
         case None =>
           none
@@ -39,7 +43,7 @@ class TaskServiceInMemoryImplementation[F[_]: Sync](random: Random,
   override def listAll(userId: UserId): F[List[Task]] =
     Sync[F].delay(map.get(userId).toList.flatMap(_.values))
 
-  override def reshuffle: F[List[Task]] =
+  override def reshuffle: F[List[(UserId, Task)]] =
     Sync[F].defer {
       val allTasks = map.values.flatMap(_.values).toList
       map.clear()
@@ -48,16 +52,15 @@ class TaskServiceInMemoryImplementation[F[_]: Sync](random: Random,
           newUser <- userService.getRandom
           newTask = task.copy(assignedUser = newUser)
           _ <- addTask(newTask)
-        } yield newTask
+        } yield (task.assignedUser.userId, newTask)
       }
     }
 
-
   private def addTask(task: Task): F[Unit] =
     Sync[F].delay {
-      if (!map.contains(task.assignedUser.id))
-        map(task.assignedUser.id) = mutable.Map.empty
-      map(task.assignedUser.id)(task.taskId) = task
+      if (!map.contains(task.assignedUser.userId))
+        map(task.assignedUser.userId) = mutable.Map.empty
+      map(task.assignedUser.userId)(task.taskId) = task
     }
 }
 
