@@ -9,6 +9,8 @@ trait UserService[F[_]] {
     user: User): F[Unit]
 
   def get(userId: UserId): F[Option[User]]
+
+  def getRandom: F[User]
 }
 
 object UserService {

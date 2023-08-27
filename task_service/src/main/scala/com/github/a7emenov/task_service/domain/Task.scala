@@ -1,4 +1,7 @@
 package com.github.a7emenov.task_service.domain
 
-case class Task(description: String,
-                user: String)
+case class Task(taskId: TaskId,
+                 description: String,
+                price: BigDecimal,
+                assignedUser: User,
+                status: TaskStatus)
