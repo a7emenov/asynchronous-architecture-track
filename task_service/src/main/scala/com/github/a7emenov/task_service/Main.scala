@@ -15,13 +15,16 @@ object Main extends IOApp {
       _ <- BlazeClientBuilder[IO].resource.use { httpClient =>
         for {
           userService <- UserService.make[IO]
-          taskService <- TaskService.make(userService)
-          authenticationService = AuthenticationService.make(config.authentication, httpClient)
-          _ <- UserStreamingConsumer.stream(userService, config.userStreamingConsumer).compile.drain.start
-          result <- Server.start(
-            config = config.http,
-            ec = runtime.compute,
-            routes = new TaskRoutes[IO](authenticationService, taskService))
+          result <- TaskService.make(config.taskBusinessProducer, userService).use { taskService =>
+            val authenticationService = AuthenticationService.make(config.authentication, httpClient)
+            for {
+              _ <- UserStreamingConsumer.stream(userService, config.userStreamingConsumer).compile.drain.start
+              result <- Server.start(
+                config = config.http,
+                ec = runtime.compute,
+                routes = new TaskRoutes[IO](authenticationService, taskService))
+            } yield result
+          }
         } yield result
       }
     } yield ExitCode.Success
