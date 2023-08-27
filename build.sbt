@@ -1,6 +1,7 @@
 enablePlugins(JavaAppPackaging)
 
 val Versions = new {
+  val circe = "0.14.1"
   val http4s = "0.23.7"
   val pureconfig = "0.17.1"
   val logback = "1.2.10"
@@ -33,10 +34,11 @@ lazy val auth_service = project
     scalacOptions ++= compilerOptions,
     scalafmtSettings,
     libraryDependencies ++= Seq(
+      "io.circe" %% "circe-generic" % Versions.circe,
       "org.http4s"                 %% "http4s-blaze-server" % Versions.http4s,
       "org.http4s"                 %% "http4s-dsl"          % Versions.http4s,
       "org.http4s"                 %% "http4s-circe"        % Versions.http4s,
-      "com.github.pureconfig"      %% "pureconfig-core"     % Versions.pureconfig,
+      "com.github.pureconfig"      %% "pureconfig"     % Versions.pureconfig,
       "ch.qos.logback"              % "logback-classic"     % Versions.logback,
       "com.typesafe.scala-logging" %% "scala-logging"       % Versions.scalaLogging
     )
