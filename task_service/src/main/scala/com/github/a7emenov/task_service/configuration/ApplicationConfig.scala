@@ -7,7 +7,8 @@ import pureconfig.{ConfigReader, ConfigSource}
 
 case class ApplicationConfig(
   http: HttpConfig,
-  authentication: AuthenticationConfig)
+  authentication: AuthenticationConfig,
+  userStreamingConsumer: UserStreamingConsumerConfig)
 
 object ApplicationConfig {
 

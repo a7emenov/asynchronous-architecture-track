@@ -20,8 +20,6 @@ class AuthenticationServiceImplementation[F[_]: Concurrent](
     extends AuthenticationService[F] with Http4sClientDsl[F] {
 
   override def authenticate(token: AuthenticationToken): F[Option[User]] = {
-    println(uri / "authentication" / "authenticate")
-    println(token)
     val request = POST(uri / "authentication" / "authenticate").addCookie(authenticationTokenCookieName, token.value)
     client.expectOption[User](request)
   }
