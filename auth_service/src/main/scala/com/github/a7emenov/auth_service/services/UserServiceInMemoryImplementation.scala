@@ -33,9 +33,6 @@ class UserServiceInMemoryImplementation[F[_]: Sync](map: mutable.Map[UserId, Use
 
   override def get(userId: UserId): F[Option[User]] =
     Sync[F].delay(map.get(userId))
-
-  override def delete(userId: UserId): F[Unit] =
-    Sync[F].delay(map.remove(userId))
 }
 
 object UserServiceInMemoryImplementation {
@@ -43,6 +40,6 @@ object UserServiceInMemoryImplementation {
   def make[F[_]: Sync]: F[UserService[F]] =
     for {
       storage <- Sync[F].delay(mutable.Map.empty[UserId, User])
-      _ <- Sync[F].delay(storage.put(UserId("f1c0f431-1d64-492b-be8e-baf57bb44a12"), User("Dummy", "Dummy", UserRole.Admin)))
+      _ <- Sync[F].delay(storage.put(UserId("f1c0f431-1d64-492b-be8e-baf57bb44a12"), User("Anton", "Semenov", UserRole.Admin)))
     } yield new UserServiceInMemoryImplementation(storage)
 }

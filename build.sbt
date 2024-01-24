@@ -2,6 +2,7 @@ enablePlugins(JavaAppPackaging)
 
 val Versions = new {
   val circe = "0.14.1"
+  val fs2Kafka = "3.0.1"
   val http4s = "0.23.7"
   val jwtCirce = "9.4.3"
   val pureconfig = "0.17.1"
@@ -22,7 +23,7 @@ lazy val compilerOptions = Seq(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(auth_service, task_service)
+  .aggregate(auth_service, task_service, billing_service)
   .settings(
     name := "asynchronous-architecture-track"
   )
@@ -35,15 +36,16 @@ lazy val auth_service = project
     scalacOptions ++= compilerOptions,
     scalafmtSettings,
     libraryDependencies ++= Seq(
-      "io.circe"                   %% "circe-generic"       % Versions.circe,
-      "io.circe"                   %% "circe-generic-extras"       % Versions.circe,
-      "org.http4s"                 %% "http4s-blaze-server" % Versions.http4s,
-      "org.http4s"                 %% "http4s-dsl"          % Versions.http4s,
-      "org.http4s"                 %% "http4s-circe"        % Versions.http4s,
-      "com.github.jwt-scala" %% "jwt-circe" % Versions.jwtCirce,
-      "com.github.pureconfig"      %% "pureconfig"          % Versions.pureconfig,
-      "ch.qos.logback"              % "logback-classic"     % Versions.logback,
-      "com.typesafe.scala-logging" %% "scala-logging"       % Versions.scalaLogging
+      "com.github.fd4s"            %% "fs2-kafka"            % Versions.fs2Kafka,
+      "io.circe"                   %% "circe-generic"        % Versions.circe,
+      "io.circe"                   %% "circe-generic-extras" % Versions.circe,
+      "org.http4s"                 %% "http4s-blaze-server"  % Versions.http4s,
+      "org.http4s"                 %% "http4s-dsl"           % Versions.http4s,
+      "org.http4s"                 %% "http4s-circe"         % Versions.http4s,
+      "com.github.jwt-scala"       %% "jwt-circe"            % Versions.jwtCirce,
+      "com.github.pureconfig"      %% "pureconfig"           % Versions.pureconfig,
+      "ch.qos.logback"              % "logback-classic"      % Versions.logback,
+      "com.typesafe.scala-logging" %% "scala-logging"        % Versions.scalaLogging
     )
   )
 
@@ -55,15 +57,37 @@ lazy val task_service = project
     scalacOptions ++= compilerOptions,
     scalafmtSettings,
     libraryDependencies ++= Seq(
-      "io.circe"                   %% "circe-generic"       % Versions.circe,
-      "io.circe"                   %% "circe-generic-extras"       % Versions.circe,
+      "com.github.fd4s"            %% "fs2-kafka"            % Versions.fs2Kafka,
+      "io.circe"                   %% "circe-generic"        % Versions.circe,
+      "io.circe"                   %% "circe-generic-extras" % Versions.circe,
+      "io.circe"                   %% "circe-parser"         % Versions.circe,
+      "org.http4s"                 %% "http4s-blaze-server"  % Versions.http4s,
+      "org.http4s"                 %% "http4s-dsl"           % Versions.http4s,
+      "org.http4s"                 %% "http4s-circe"         % Versions.http4s,
+      "org.http4s"                 %% "http4s-blaze-client"  % Versions.http4s,
+      "com.github.pureconfig"      %% "pureconfig"           % Versions.pureconfig,
+      "ch.qos.logback"              % "logback-classic"      % Versions.logback,
+      "com.typesafe.scala-logging" %% "scala-logging"        % Versions.scalaLogging
+    )
+  )
 
-      "org.http4s"                 %% "http4s-blaze-server" % Versions.http4s,
-      "org.http4s"                 %% "http4s-dsl"          % Versions.http4s,
-      "org.http4s"                 %% "http4s-circe"        % Versions.http4s,
-      "org.http4s"                 %% "http4s-blaze-client"        % Versions.http4s,
-      "com.github.pureconfig"      %% "pureconfig"          % Versions.pureconfig,
-      "ch.qos.logback"              % "logback-classic"     % Versions.logback,
-      "com.typesafe.scala-logging" %% "scala-logging"       % Versions.scalaLogging
+lazy val billing_service = project
+  .in(file("billing_service"))
+  .settings(
+    name := "billing-service",
+    scalaVersion := "2.13.11",
+    scalacOptions ++= compilerOptions,
+    scalafmtSettings,
+    libraryDependencies ++= Seq(
+      "com.github.fd4s"            %% "fs2-kafka"            % Versions.fs2Kafka,
+      "io.circe"                   %% "circe-generic"        % Versions.circe,
+      "io.circe"                   %% "circe-generic-extras" % Versions.circe,
+      "io.circe"                   %% "circe-parser"         % Versions.circe,
+      "org.http4s"                 %% "http4s-blaze-server"  % Versions.http4s,
+      "org.http4s"                 %% "http4s-dsl"           % Versions.http4s,
+      "org.http4s"                 %% "http4s-circe"         % Versions.http4s,
+      "com.github.pureconfig"      %% "pureconfig"           % Versions.pureconfig,
+      "ch.qos.logback"              % "logback-classic"      % Versions.logback,
+      "com.typesafe.scala-logging" %% "scala-logging"        % Versions.scalaLogging
     )
   )

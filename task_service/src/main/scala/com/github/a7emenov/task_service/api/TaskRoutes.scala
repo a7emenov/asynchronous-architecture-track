@@ -25,7 +25,6 @@ class TaskRoutes[F[_]: Async](
   private def taskRoutes: AuthedRoutes[User, F] =
     AuthedRoutes.of {
       case request @ PUT -> Root / "create" as _ =>
-        println("here")
         for {
           req <- request.req.as[CreateTaskRequest]
           task <- taskService.create(req.description)

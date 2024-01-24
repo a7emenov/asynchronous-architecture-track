@@ -1,4 +1,4 @@
-package com.github.a7emenov.auth_service.configuration
+package com.github.a7emenov.billing_service.configuration
 
 import cats.effect.Sync
 import pureconfig.error.ConfigReaderException
@@ -8,7 +8,7 @@ import pureconfig.generic.semiauto._
 case class ApplicationConfig(
   http: HttpConfig,
   authentication: AuthenticationConfig,
-  userStreamingProducer: UserStreamingProducerConfig)
+  taskBusinessConsumer: TaskBusinessConsumerConfig)
 
 object ApplicationConfig {
 

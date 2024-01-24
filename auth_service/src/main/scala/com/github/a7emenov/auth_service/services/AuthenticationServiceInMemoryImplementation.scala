@@ -22,12 +22,15 @@ class AuthenticationServiceInMemoryImplementation[F[_]: Applicative](
   override def login(userId: UserId): F[Option[AuthenticationToken]] =
     for {
       user <- userService.get(userId)
+      _ = println(user)
       token = user.map { u =>
         val body = JwtClaimBody(userId, u)
         val claim = JwtClaim(
           content = body.asJson.noSpaces
         )
-        AuthenticationToken(JwtCirce.encode(claim, config.secretKey, AuthenticationServiceInMemoryImplementation.algo))
+        val token = JwtCirce.encode(claim, config.secretKey, AuthenticationServiceInMemoryImplementation.algo)
+        println(token)
+        AuthenticationToken(token)
       }
     } yield token
 
